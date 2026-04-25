@@ -1,0 +1,5 @@
+src/pages/**
+src/components/primitives.ts
+src/utils/**
+README.md
+tests/**
