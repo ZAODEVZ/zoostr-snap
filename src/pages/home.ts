@@ -1,39 +1,39 @@
 import {
   stack, text, item, badge, separator,
   submitButton, openUrlButton, shareCastButton,
-  themes,
 } from '../components/primitives.js';
+import type { BoostrStats } from '../lib/boostr.js';
+import { LINKS } from '../lib/links.js';
+import { fmt } from '../utils/format.js';
 
-// Landing page. Demonstrates: themed accent, header item with badge, info text,
-// button rows (submit / open_url / share_cast), and a separator divider.
-
-export function buildHomePage(baseUrl: string) {
+export function buildHomePage(baseUrl: string, stats: BoostrStats | null) {
+  const statLine = stats
+    ? `${fmt(stats.allTimeContributors)} boosters, ${fmt(stats.totalBoosts)} boosts so far`
+    : 'Live booster stats are on the leaderboard';
   return {
     version: '1.0' as const,
-    theme: themes.zlank,
+    theme: { accent: 'amber' as const },
     ui: {
       root: 'page',
       elements: {
-        page: stack('vertical', 'md', ['header', 'desc', 'div1', 'btn_row_1', 'btn_row_2']),
+        page: stack('vertical', 'md', ['header', 'desc', 'stats', 'div1', 'row1', 'row2']),
 
-        header: { ...item('Zlank Snap Template', 'Starter for Farcaster Snaps'), children: ['header_badge'] },
-        header_badge: badge('v0.1', 'green'),
+        header: { ...item('Zoostr', 'ZABAL x Boostr, the first Sparkz launch'), children: ['live'] },
+        live: badge('Empire live', 'green'),
 
-        desc: text('Tap a button to navigate. Each route in src/pages/ renders a Snap page. Wire your own data + actions in src/app.ts.', { size: 'sm' }),
+        desc: text('Boost ZABAL casts on Farcaster to earn points. Top boosters lead the Zoostr Empire on Base.', { size: 'sm' }),
+        stats: text(statLine, { weight: 'bold', size: 'sm' }),
 
         div1: separator(),
 
-        btn_row_1: stack('horizontal', 'sm', ['form_btn', 'docs_btn']),
-        form_btn: submitButton('Try Form Page', `${baseUrl}/form`, { variant: 'primary' }),
-        docs_btn: openUrlButton('Snap Docs', 'https://docs.farcaster.xyz/snap'),
+        row1: stack('horizontal', 'sm', ['lb_btn', 'me_btn']),
+        lb_btn: submitButton('Leaderboard', `${baseUrl}/leaderboard`, { variant: 'primary' }),
+        me_btn: submitButton('My rank', `${baseUrl}/me`),
 
-        btn_row_2: stack('horizontal', 'sm', ['source_btn', 'share_btn']),
-        source_btn: openUrlButton('Source', 'https://github.com/zlank-labs/zlank-snap-template', 'code'),
-        share_btn: shareCastButton(
-          'Share',
-          'Check out this Farcaster Snap built with the Zlank template',
-          [baseUrl],
-        ),
+        row2: stack('horizontal', 'sm', ['empire_btn', 'hearth_btn', 'share_btn']),
+        empire_btn: openUrlButton('Empire', LINKS.empire),
+        hearth_btn: openUrlButton('Sparkz', LINKS.hearth),
+        share_btn: shareCastButton('Share', 'Zoostr is live: boost ZABAL, climb the board', [baseUrl]),
       },
     },
   };

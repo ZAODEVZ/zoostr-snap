@@ -1,9 +1,9 @@
 {
-  "name": "zlank-snap-template",
+  "name": "zoostr-snap",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Starter template for Farcaster Snaps - Hono + Vercel + @farcaster/snap. Multi-page, themed, includes form input + state passing + share-cast pattern.",
+  "description": "Zoostr Farcaster Snap: live Boostr leaderboard, my rank, Empire and Sparkz links.",
   "scripts": {
     "dev": "SKIP_JFS_VERIFICATION=true tsx watch src/server.ts",
     "build": "echo done",

@@ -2,5 +2,5 @@ import { serve } from '@hono/node-server';
 import app from './app.js';
 
 const port = Number(process.env.PORT) || 3010;
-console.log(`Zlank Snap template running at http://localhost:${port}`);
+console.log(`Zoostr snap running at http://localhost:${port}`);
 serve({ fetch: app.fetch, port });

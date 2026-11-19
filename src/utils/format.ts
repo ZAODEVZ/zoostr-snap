@@ -11,3 +11,7 @@ export function sanitizeInput(value: string, maxLen = 80): string {
     .trim()
     .slice(0, maxLen);
 }
+
+export function fmt(n: number): string {
+  return Number.isFinite(n) ? Math.round(n).toLocaleString('en-US') : '0';
+}
