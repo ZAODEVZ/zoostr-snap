@@ -6,7 +6,7 @@
   "description": "Zoostr Farcaster Snap: live Boostr leaderboard, my rank, Empire and Sparkz links.",
   "scripts": {
     "dev": "SKIP_JFS_VERIFICATION=true tsx watch src/server.ts",
-    "build": "echo done",
+    "build": "node -e \"require('fs').mkdirSync('public',{recursive:true})\"",
     "typecheck": "tsc --noEmit",
     "deploy": "vercel --prod"
   },
