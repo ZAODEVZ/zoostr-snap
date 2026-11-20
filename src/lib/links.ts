@@ -4,3 +4,4 @@ export const LINKS = {
   site: 'https://zoostr.vercel.app',
   leaderboard: 'https://zoostr.vercel.app/leaderboard',
 };
+export const CREDIT = 'Data: Boostr by cashlessman.eth. Auto-likes are opt-in and unpaid.';

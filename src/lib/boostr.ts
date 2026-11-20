@@ -73,3 +73,48 @@ export async function getStats(): Promise<BoostrStats | null> {
     return cache?.data ?? null;
   }
 }
+
+// ---- /authors and /casts (desk #218). Same rules: timeout, cache, null on failure.
+const BOOSTR_BASE = process.env.BOOSTR_BASE_URL ?? 'https://boostr.sahban.dev/api/zabal';
+const EXTRA_TTL_MS = 5 * 60_000;
+
+export type BoostedAuthor = { fid: number; username: string | null; count: number };
+export type BoostedCast = { fid: number; castHash: string };
+
+const extraCache = new Map<string, { at: number; data: unknown }>();
+
+async function cachedJson<T>(url: string, pick: (raw: Record<string, unknown>) => T | null): Promise<T | null> {
+  const hit = extraCache.get(url);
+  if (hit && Date.now() - hit.at < EXTRA_TTL_MS) return hit.data as T;
+  try {
+    const res = await fetch(url, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(4000) });
+    if (!res.ok) return (hit?.data as T) ?? null;
+    const raw = (await res.json()) as Record<string, unknown>;
+    const data = raw && raw.success ? pick(raw) : null;
+    if (data === null) return (hit?.data as T) ?? null;
+    extraCache.set(url, { at: Date.now(), data });
+    return data;
+  } catch {
+    return (hit?.data as T) ?? null;
+  }
+}
+
+/** Whose casts the crew boosts, most boosted first. */
+export function getAuthors(): Promise<BoostedAuthor[] | null> {
+  return cachedJson(`${BOOSTR_BASE}/authors`, (raw) => {
+    if (!Array.isArray(raw.authors)) return null;
+    return (raw.authors as BoostedAuthor[])
+      .filter((a) => a && typeof a.fid === 'number' && typeof a.count === 'number')
+      .sort((a, b) => b.count - a.count);
+  });
+}
+
+/** The newest boosted casts, newest first. */
+export function getRecentCasts(limit = 50): Promise<BoostedCast[] | null> {
+  return cachedJson(`${BOOSTR_BASE}/casts?sortBy=createdAt&order=desc&limit=${limit}&offset=0`, (raw) => {
+    if (!Array.isArray(raw.casts)) return null;
+    return (raw.casts as BoostedCast[]).filter(
+      (c) => c && typeof c.fid === 'number' && typeof c.castHash === 'string' && /^0x[0-9a-f]+$/i.test(c.castHash),
+    );
+  });
+}

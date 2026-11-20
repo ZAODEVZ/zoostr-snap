@@ -16,7 +16,7 @@ export function buildHomePage(baseUrl: string, stats: BoostrStats | null) {
     ui: {
       root: 'page',
       elements: {
-        page: stack('vertical', 'md', ['header', 'desc', 'stats', 'div1', 'row1', 'row2']),
+        page: stack('vertical', 'md', ['header', 'desc', 'stats', 'div1', 'row1', 'row1b', 'row2']),
 
         header: { ...item('Zoostr', 'ZABAL x Boostr, the first Sparkz launch'), children: ['live'] },
         live: badge('Empire live', 'green'),
@@ -29,6 +29,10 @@ export function buildHomePage(baseUrl: string, stats: BoostrStats | null) {
         row1: stack('horizontal', 'sm', ['lb_btn', 'me_btn']),
         lb_btn: submitButton('Leaderboard', `${baseUrl}/leaderboard`, { variant: 'primary' }),
         me_btn: submitButton('My rank', `${baseUrl}/me`),
+
+        row1b: stack('horizontal', 'sm', ['spark_btn', 'lifted_btn']),
+        spark_btn: submitButton('Fresh Spark', `${baseUrl}/spark`),
+        lifted_btn: submitButton('Who we lift', `${baseUrl}/lifted`),
 
         row2: stack('horizontal', 'sm', ['empire_btn', 'hearth_btn', 'share_btn']),
         empire_btn: openUrlButton('Empire', LINKS.empire),

@@ -133,3 +133,16 @@ export const themes = {
   zao: { accent: 'amber' as Accent },
   default: { accent: 'blue' as Accent },
 };
+
+export function viewCastButton(label: string, hash: string, opts: { variant?: Variant } = {}) {
+  return {
+    type: 'button' as const,
+    props: { label, icon: 'message-circle', ...(opts.variant && { variant: opts.variant }) },
+    on: {
+      press: {
+        action: 'view_cast' as const,
+        params: { hash },
+      },
+    },
+  };
+}

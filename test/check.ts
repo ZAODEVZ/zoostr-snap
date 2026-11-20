@@ -16,6 +16,18 @@ const s = await getStats();
 const pages = { home: buildHomePage('https://x.app', s), lb: buildLeaderboardPage('https://x.app', s),
   me: buildMePage('https://x.app', s, 19640), meNone: buildMePage('https://x.app', s, 999),
   homeDown: buildHomePage('https://x.app', null), lbDown: buildLeaderboardPage('https://x.app', null) };
+const { buildLiftedPage } = await import('../src/pages/lifted.js');
+const { buildSparkPage } = await import('../src/pages/spark.js');
+const authors = [{ fid: 19640, username: 'zaal', count: 100 }, { fid: 77, username: null, count: 38 }, { fid: 2, username: 'b', count: 9 }];
+const casts = [{ fid: 19640, castHash: '0xa62b22dfe702cdcc76d4244d0ddcccf72aa28142' }, { fid: 77, castHash: '0x996e1fb74a03cdc31e2f2bfbb1988f9d66cfecc2' }];
+Object.assign(pages, {
+  lifted: buildLiftedPage('https://x.app', authors, s), liftedNoStats: buildLiftedPage('https://x.app', authors, null),
+  liftedDown: buildLiftedPage('https://x.app', null, null),
+  spark: buildSparkPage('https://x.app', casts, authors, s, 0), sparkNext: buildSparkPage('https://x.app', casts, authors, s, 1),
+  sparkOver: buildSparkPage('https://x.app', casts, null, null, 99), sparkDown: buildSparkPage('https://x.app', null, null, null, 0),
+});
+const L = (pages as Record<string, { ui: { elements: Record<string, { props?: { description?: string; label?: string } }> } }>);
+console.log(L.lifted.ui.elements.a0.props?.description, '|', L.lifted.ui.elements.a1b.props?.label, '|', L.sparkOver.ui.elements.tag.props?.label);
 let bad = 0;
 for (const [k, p] of Object.entries(pages)) {
   const r = validateSnapResponse(p as never);

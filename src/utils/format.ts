@@ -15,3 +15,9 @@ export function sanitizeInput(value: string, maxLen = 80): string {
 export function fmt(n: number): string {
   return Number.isFinite(n) ? Math.round(n).toLocaleString('en-US') : '0';
 }
+
+/** "@name" for a Farcaster username (dots kept, as in presdency.eth), or "fid N" when Boostr has none. */
+export function handle(username: string | null | undefined, fid: number): string {
+  const name = (username ?? '').replace(/[^a-zA-Z0-9._-]/g, '').slice(0, 24);
+  return name ? `@${name}` : `fid ${fid}`;
+}
