@@ -1,7 +1,7 @@
 # Zoostr hat, made onchain (Optimism)
 
 The Hats website can no longer save hats, so this is one transaction on the Hats contract itself.
-It makes two hats at once under ZABAL's hat 226.1.1.11:
+It makes two hats at once under 226.1.1.11 (on chain it is still named "Future Project 3", the empty project slot you picked in the Hats app; rename it Zoostr after):
 
 - **226.1.1.11.1 Zoostr Manager** (max 5)
 - **226.1.1.11.1.1 Zoostr** (max 10,000, the free supporter hat)
